@@ -1,0 +1,96 @@
+@startuml
+
+interface IDamageable{
++int health
+void tryDamage(int amount);
+void takeDamage(int amount);
+}
+interface IPlayerStats{
++PlayerStats
+}
+interface ICommand{
+void execute();
+}
+interface IWaveBuilder{
+void BuildStrong();
+void BuildWeak();
+void BuildMedium();
+wave GetWave();
+}
+
+class GameManager{
+ -playervars
+void Awake();
+void Update();
+}
+class BasePlayerStats{
+-PlayerVars
+}
+class StatsDecorator
+
+class FireRateModifier{
+ -float multiplier;
+}
+class HealthModifier{
+-float multiplier
+}
+
+class Player{
+void Shoot();
+}
+class InputHandler
+{
+-ICommand MoveCommand;
+-ICommand ShootCommand;
+void HandleInput();
+}
+
+class MoveCommand
+class ShootCommand
+
+class Enemy{
++EnemyStats
+}
+
+class Wave{
++List<Enemies> enemies
+}
+class WaveBuilder{
+void BuildStrong();
+void BuildWeak();
+void BuildMedium();
+Wave GetWave();
+}
+class WaveDirector
+{
+void BuildExampleWave();
+}
+
+
+IDamageable <.. Player
+IDamageable <.. Enemy
+
+ICommand <.. MoveCommand
+ICommand <.. ShootCommand
+
+InputHandler *-- MoveCommand
+InputHandler *-- ShootCommand
+
+Player --> InputHandler : Uses
+
+IPlayerStats <.. BasePlayerStats
+GameManager *-- BasePlayerStats
+GameManager *-- Player
+
+StatsDecorator <.. IPlayerStats
+FireRateModifier --> StatsDecorator : Inherits
+HealthModifier --> StatsDecorator : Inherits
+
+IWaveBuilder <.. WaveBuilder
+WaveBuilder --> Wave : Uses
+WaveDirector --> WaveBuilder : Uses
+Wave --> Enemy : Uses
+
+GameManager *-- WaveDirector
+
+@enduml
