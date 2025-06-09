@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player : IDamagable
+public class Player : MonoBehaviour, IDamagable
 {
     private InputManager _inputManager;
 
@@ -15,7 +15,7 @@ public class Player : IDamagable
     private float _lookSensitivity = 0.2f;
     private int _damage;
     
-    public int _health { get; set; }
+    public int health { get; set; }
 
     private LayerMask EnemyMask = LayerMask.GetMask("Enemy");
 
@@ -67,13 +67,14 @@ public class Player : IDamagable
             IDamagable damagable = hit.transform.GetComponent<IDamagable>();
             if (damagable != null)
             {
+                Debug.Log(hit.transform.name);
                 damagable.TryDamage(_damage);
             }
         }
     }
     public void TryDamage(int amount)
     {
-        throw new System.NotImplementedException();
+        Debug.Log("player damaged" + amount);
     }
 
     public void takeDamage(int amount)
