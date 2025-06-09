@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class LookCommand : MonoBehaviour
+public class LookCommand : IDirectionalCommand
 {
     private Player _player;
 
@@ -9,7 +9,7 @@ public class LookCommand : MonoBehaviour
         _player = player;
     }
 
-    public void Execute(Vector3 direction)
+    public void Execute(Vector2 direction)
     {
         _player.Look(direction);
     }

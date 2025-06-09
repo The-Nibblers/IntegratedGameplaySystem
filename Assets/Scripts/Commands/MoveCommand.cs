@@ -10,7 +10,7 @@ public class MoveCommand : IDirectionalCommand
         _player = player;
     }
 
-    public void Execute(Vector3 direction)
+    public void Execute(Vector2 direction)
     {
         _player.Move(direction);
     }
