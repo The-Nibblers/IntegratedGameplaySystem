@@ -9,6 +9,7 @@ public class Enemy : IDamagable
     private GameObject _playerObject;
     private Player _playerScript;
     private GameObject _enemyGameObject;
+    private Wave _wave;
     
     private int _damage;
     private int _speed;
@@ -18,7 +19,7 @@ public class Enemy : IDamagable
     
     public int health { get; set; }
 
-    public Enemy(NavMeshAgent agent, GameObject playerObject, Player playerScript, GameObject enemyGameObject, int damage, int speed, int hitRadius, int maxdistance, int maxHealth)
+    public Enemy(NavMeshAgent agent, GameObject playerObject, Player playerScript, GameObject enemyGameObject, int damage, int speed, int hitRadius, int maxdistance, int maxHealth, Wave wave)
     {
         _agent = agent;
         _playerObject = playerObject;
@@ -29,6 +30,7 @@ public class Enemy : IDamagable
         _hitRadius = hitRadius;
         _maxdistance = maxdistance;
         _maxHealth = maxHealth;
+        _wave = wave;
         
         _agent.speed = _speed;
         health = _maxHealth;
@@ -52,7 +54,9 @@ public class Enemy : IDamagable
             Debug.Log("player");
             _playerScript.TryDamage(_damage);
             
-            //destroy gameobject
+            //destrpy gameobject
+            _wave.RemoveEnemy(this);
+            UnityEngine.Object.Destroy(_enemyGameObject);
         }
     }
 
@@ -69,7 +73,11 @@ public class Enemy : IDamagable
     public void takeDamage(int amount)
     {
         health -= amount;
-        
-        //destroy gameobject
+
+        if (health <= 0)
+        {
+            _wave.RemoveEnemy(this);
+            UnityEngine.Object.Destroy(_enemyGameObject);
+        }
     }
 }
