@@ -3,10 +3,13 @@ using UnityEngine;
 public class WaveDirector
 {
     private IWaveBuilder _waveBuilder;
-
-    public WaveDirector()
+    
+    /// <summary>
+    /// TODO: Make more waves, update all enemies, wave decisions
+    /// </summary>
+    public WaveDirector(GameObject weakPrefab, GameObject mediumPrefab, GameObject strongPrefab, GameObject PlayerObject, Player PlayerScript)
     {
-        _waveBuilder = new WaveBuilder();
+        _waveBuilder = new WaveBuilder(weakPrefab, mediumPrefab, strongPrefab, PlayerObject, PlayerScript);
     }
 
     public void BuildFastWave()
@@ -23,6 +26,4 @@ public class WaveDirector
     {
         _waveBuilder.BuildStrong(5);
     }
-    
-    //make more waves
 }
