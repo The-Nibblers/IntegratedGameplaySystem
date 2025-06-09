@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player
+public class Player : IDamagable
 {
     private InputManager _inputManager;
 
@@ -12,7 +12,12 @@ public class Player
     private Camera _playerCamera;
     
     private float _moveSpeed = 5f;
-    private float _lookSensitivity = 0.5f;
+    private float _lookSensitivity = 0.2f;
+    private int _damage;
+    
+    public int _health { get; set; }
+
+    private LayerMask EnemyMask = LayerMask.GetMask("Enemy");
 
     public Player(GameObject playerGameObject)
     {
@@ -56,6 +61,23 @@ public class Player
 
     public void Shoot()
     {
-        Debug.Log("SHOOT");
+        if (Physics.Raycast(_playerGameObject.transform.position, _playerGameObject.transform.forward,
+                out RaycastHit hit,EnemyMask))
+        {
+            IDamagable damagable = hit.transform.GetComponent<IDamagable>();
+            if (damagable != null)
+            {
+                damagable.TryDamage(_damage);
+            }
+        }
+    }
+    public void TryDamage(int amount)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void takeDamage(int amount)
+    {
+        throw new System.NotImplementedException();
     }
 }
