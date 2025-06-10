@@ -101,6 +101,10 @@ public class Player : IDamagable
             {
                 Debug.Log("Enemy isnt null");
                 enemy.TryDamage(_damage);
+                
+                //testing of decorator
+                // _playerStats = new SpeedModifier(_playerStats, 2f);
+                // _moveSpeed = _playerStats.GetMoveSpeed();
             }
         }
     }

@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class HealthModifier : StatsDecorator
 {
-    private float _multiplier;
+    private float _bonus;
 
     public HealthModifier(IPlayerStats innerStats, float multiplier) : base(innerStats)
     {
-        _multiplier = _multiplier;
+        _bonus = multiplier;
     }
     
-    public override float GetMaxHealth() => _innerStats.GetMaxHealth() * _multiplier;
+    public override float GetMaxHealth() => _innerStats.GetMaxHealth() * _bonus;
 }
