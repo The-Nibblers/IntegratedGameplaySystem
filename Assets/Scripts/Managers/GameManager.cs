@@ -19,12 +19,17 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         _waveDirector = new WaveDirector(_weakPrefab, _mediumPrefab, _strongPrefab, _playerGameObject, _player);
 
-        _waveDirector.BuildMediumWave();
+        _waveDirector.BuildFastWave();
     }
     
     void Update()
     {
         _player.playerUpdate();
         _waveDirector.UpdateEnemies();
+
+        if (!_waveDirector.IsWaveActive())
+        {
+            _waveDirector.BuildMediumWave();
+        }
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 public class Player : IDamagable
 {
     /// <summary>
-    /// TODO: Health logic
+    /// TODO: Health logic, fire cooldown
     /// </summary>
     private InputManager _inputManager;
 
@@ -20,7 +20,7 @@ public class Player : IDamagable
     
     public int health { get; set; }
 
-    private LayerMask EnemyMask = LayerMask.GetMask("Enemy");
+    private LayerMask _enemyMask = LayerMask.GetMask("Enemy");
     
     private Wave _currentWave;
 
@@ -74,7 +74,11 @@ public class Player : IDamagable
         if (Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward,
                 out RaycastHit hit))
         {
-            if (hit.transform.gameObject.layer == EnemyMask) return;
+            if (((1 << hit.transform.gameObject.layer) & _enemyMask) == 0)
+            {
+                // Not enemy layer, ignore hit or return
+                return;
+            }
             
             Debug.Log(hit.collider.gameObject.name);
             if (_currentWave == null) return;
