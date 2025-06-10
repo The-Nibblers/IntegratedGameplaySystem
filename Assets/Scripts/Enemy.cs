@@ -24,7 +24,7 @@ public class Enemy : IDamagable
     
     private LayerMask _playerLayerMask = LayerMask.GetMask("Player");
     
-    public int health { get; set; }
+    public float health { get; set; }
 
     public Enemy(NavMeshAgent agent, GameObject playerObject, Player playerScript, GameObject enemyGameObject, int damage, int speed, int hitRadius, int maxdistance, int maxHealth, Wave wave)
     {
@@ -73,12 +73,12 @@ public class Enemy : IDamagable
         }
     }
     
-    public void TryDamage(int amount)
+    public void TryDamage(float amount)
     {
         takeDamage(amount);
     }
 
-    public void takeDamage(int amount)
+    public void takeDamage(float amount)
     {
         health -= amount;
         

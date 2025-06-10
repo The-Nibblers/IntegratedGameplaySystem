@@ -13,16 +13,20 @@ public class Player : IDamagable
     
     private GameObject _playerGameObject;
     private Camera _playerCamera;
-    
-    private float _moveSpeed = 5f;
     private float _lookSensitivity = 0.2f;
-    private int _damage = 20;
     
-    public int health { get; set; }
+    private float _moveSpeed;
+    private float _damage;
+    private float _maxHealth;
+    private float _fireRate;
+    
+    public float health { get; set; }
 
     private LayerMask _enemyMask = LayerMask.GetMask("Enemy");
     
     private Wave _currentWave;
+    
+    private IPlayerStats _playerStats;
 
     public Player(GameObject playerGameObject)
     {
@@ -34,6 +38,14 @@ public class Player : IDamagable
         
         _playerCamera = Camera.main;
         _playerGameObject = playerGameObject;
+
+        _playerStats = new BasePlayerStats();
+
+        _moveSpeed = _playerStats.GetMoveSpeed();
+        _damage = _playerStats.GetDamage();
+        _maxHealth = _playerStats.GetMaxHealth();
+        _fireRate = _playerStats.GetFireRate();
+        
     }
     
     public void playerUpdate()
@@ -92,12 +104,12 @@ public class Player : IDamagable
             }
         }
     }
-    public void TryDamage(int amount)
+    public void TryDamage(float amount)
     {
         Debug.Log("player damaged" + amount);
     }
 
-    public void takeDamage(int amount)
+    public void takeDamage(float amount)
     {
         throw new System.NotImplementedException();
     }

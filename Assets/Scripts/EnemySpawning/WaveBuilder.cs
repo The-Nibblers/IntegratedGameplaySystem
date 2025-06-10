@@ -4,6 +4,10 @@ using UnityEngine.AI;
 
 public class WaveBuilder : IWaveBuilder
 {
+    
+    /// <summary>
+    /// TODO: tweak enemy values
+    /// </summary>
     private Wave _wave = new Wave();
 
     private GameObject _PlayerObject;

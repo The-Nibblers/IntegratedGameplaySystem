@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface IDamagable
 {
-    int health { get; set; }
-    void TryDamage(int amount);
-    void takeDamage(int amount);
+    float health { get; set; }
+    void TryDamage(float amount);
+    void takeDamage(float amount);
 }
