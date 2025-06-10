@@ -12,7 +12,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _strongPrefab;
     
     [Header("Item prefabs")]
-    [SerializeField] private List<GameObject> _itemPrefabs;  
+    [SerializeField] private List<GameObject> _itemPrefabs;
+    
+    [Header("UI Items")]
+    [SerializeField] private List<GameObject> _uiItems;
+    private UIManager _uiManager;
     
     private WaveDirector _waveDirector;
     

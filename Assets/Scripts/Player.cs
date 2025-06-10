@@ -132,16 +132,21 @@ public class Player : IDamagable
     //health logic
     public void TryDamage(float amount)
     {
-        Debug.Log("player damaged" + amount);
+        takeDamage(amount);
     }
 
     public void takeDamage(float amount)
     {
-        throw new System.NotImplementedException();
+        health -= amount;
+
+        if (health <= 0)
+        {
+            Die();
+        }
     }
 
     private void Die()
     {
-        
+        Debug.Log("dead");
     }
 }
