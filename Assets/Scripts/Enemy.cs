@@ -13,6 +13,7 @@ public class Enemy : IDamagable
     private GameObject _playerObject;
     private Player _playerScript;
     private GameObject _enemyGameObject;
+    public GameObject GameObject => _enemyGameObject;
     private Wave _wave;
     
     private int _damage;

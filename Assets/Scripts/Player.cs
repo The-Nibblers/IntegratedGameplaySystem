@@ -21,6 +21,8 @@ public class Player : IDamagable
     public int health { get; set; }
 
     private LayerMask EnemyMask = LayerMask.GetMask("Enemy");
+    
+    private Wave _currentWave;
 
     public Player(GameObject playerGameObject)
     {
@@ -37,6 +39,11 @@ public class Player : IDamagable
     public void playerUpdate()
     {
         _inputManager.HandleInput();
+    }
+
+    public void PlayerSetWave(Wave wave)
+    {
+        _currentWave = wave;
     }
 
     public void Move(Vector2 input)
@@ -65,15 +72,16 @@ public class Player : IDamagable
     public void Shoot()
     {
         if (Physics.Raycast(_playerGameObject.transform.position, _playerGameObject.transform.forward,
-                out RaycastHit hit,EnemyMask))
+                out RaycastHit hit))
         {
-            IDamagable damagable = hit.transform.GetComponent<IDamagable>();
-            if (damagable != null)
-            {
-                Debug.Log(hit.transform.name);
-                damagable.TryDamage(_damage);
-            }
+            Debug.Log("HIT: " + hit.transform.name);
+            Debug.Log("HIT Layer: " + LayerMask.LayerToName(hit.transform.gameObject.layer));
         }
+        else
+        {
+            Debug.Log("NO HIT AT ALL");
+        }
+        
     }
     public void TryDamage(int amount)
     {
