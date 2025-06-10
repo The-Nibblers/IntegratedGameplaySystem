@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Shoe
+  - Magazine
+  - Syringe
+  - Bullet
   layers:
   - Default
   - TransparentFX

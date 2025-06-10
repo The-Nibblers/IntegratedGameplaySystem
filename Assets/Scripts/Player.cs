@@ -101,13 +101,35 @@ public class Player : IDamagable
             {
                 Debug.Log("Enemy isnt null");
                 enemy.TryDamage(_damage);
-                
-                //testing of decorator
-                // _playerStats = new SpeedModifier(_playerStats, 2f);
-                // _moveSpeed = _playerStats.GetMoveSpeed();
             }
         }
     }
+    //Decorator functions
+    public void ChangeFireRate(float modifier)
+    {
+        _playerStats = new FireRateModifier(_playerStats, modifier);
+        _fireRate = _playerStats.GetFireRate();
+    }
+    
+    public void ChangeMaxHealth(float modifier)
+    {
+        _playerStats = new HealthModifier(_playerStats, modifier);
+        _maxHealth = _playerStats.GetMaxHealth();
+    }
+    
+    public void ChangeDamage(float modifier)
+    {
+        _playerStats = new DamageModifier(_playerStats, modifier);
+        _damage = _playerStats.GetDamage();
+    }
+    
+    public void ChangeSpeed(float modifier)
+    {
+        _playerStats = new SpeedModifier(_playerStats, modifier);
+        _moveSpeed = _playerStats.GetMoveSpeed();
+    }
+    
+    //health logic
     public void TryDamage(float amount)
     {
         Debug.Log("player damaged" + amount);
@@ -116,5 +138,10 @@ public class Player : IDamagable
     public void takeDamage(float amount)
     {
         throw new System.NotImplementedException();
+    }
+
+    private void Die()
+    {
+        
     }
 }

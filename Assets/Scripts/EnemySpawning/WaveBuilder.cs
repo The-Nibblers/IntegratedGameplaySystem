@@ -13,6 +13,8 @@ public class WaveBuilder : IWaveBuilder
     private GameObject _PlayerObject;
     private Player _playerScript;
     
+    private ItemDropper _itemDropper;
+    
     private GameObject _weakPrefab;
     private GameObject _MediumPrefab;
     private GameObject _StrongPrefab;
@@ -22,13 +24,14 @@ public class WaveBuilder : IWaveBuilder
     private Vector3 _spawnLocation3 = new Vector3(40, 0, 0);
     private List<Vector3> _spawnLocations = new List<Vector3>();
 
-    public WaveBuilder(GameObject weakPrefab, GameObject mediumPrefab, GameObject strongPrefab, GameObject PlayerObject, Player PlayerScript)
+    public WaveBuilder(GameObject weakPrefab, GameObject mediumPrefab, GameObject strongPrefab, GameObject PlayerObject, Player PlayerScript, ItemDropper ItemDropper)
     {
         _weakPrefab = weakPrefab;
         _MediumPrefab = mediumPrefab;
         _StrongPrefab = strongPrefab;
         _PlayerObject = PlayerObject;
         _playerScript = PlayerScript;
+        _itemDropper = ItemDropper;
         
         _spawnLocations.Add(_spawnLocation1);
         _spawnLocations.Add(_spawnLocation2);
@@ -43,7 +46,7 @@ public class WaveBuilder : IWaveBuilder
 
             GameObject weakPrefabInstance = UnityEngine.Object.Instantiate(_weakPrefab, spawnPosition, Quaternion.identity);
             NavMeshAgent agent = weakPrefabInstance.GetComponent<NavMeshAgent>();
-            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, weakPrefabInstance, 10, 4, 1, 1, 20, _wave));
+            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, weakPrefabInstance, 10, 4, 1, 1, 20, _wave, _itemDropper ));
         }
     }
 
@@ -56,7 +59,7 @@ public class WaveBuilder : IWaveBuilder
 
             GameObject mediumPrefabInstance = UnityEngine.Object.Instantiate(_MediumPrefab, spawnPosition, Quaternion.identity);
             NavMeshAgent agent = mediumPrefabInstance.GetComponent<NavMeshAgent>();
-            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, mediumPrefabInstance, 20, 2, 2, 1, 50, _wave));
+            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, mediumPrefabInstance, 20, 2, 2, 1, 50, _wave, _itemDropper));
         }
     }
 
@@ -69,7 +72,7 @@ public class WaveBuilder : IWaveBuilder
 
             GameObject strongPrefabInstance = UnityEngine.Object.Instantiate(_StrongPrefab, spawnPosition, Quaternion.identity);
             NavMeshAgent agent = strongPrefabInstance.GetComponent<NavMeshAgent>();
-            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, strongPrefabInstance, 40, 1, 4, 1, 100, _wave));
+            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, strongPrefabInstance, 40, 1, 4, 1, 100, _wave, _itemDropper));
         }
     }
 

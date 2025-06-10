@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WaveDirector
@@ -6,15 +7,18 @@ public class WaveDirector
     private Wave _currentWave;
 
     private Player _playerScript;
+    private ItemDropper _itemDropper;
     
     /// <summary>
     /// TODO: Make more waves, wave decisions
     /// </summary>
-    public WaveDirector(GameObject weakPrefab, GameObject mediumPrefab, GameObject strongPrefab, GameObject PlayerObject, Player PlayerScript)
+    public WaveDirector(GameObject weakPrefab, GameObject mediumPrefab, GameObject strongPrefab, GameObject PlayerObject, Player PlayerScript, List<GameObject> itemPrefabs)
     {
         _playerScript = PlayerScript;
         
-        _waveBuilder = new WaveBuilder(weakPrefab, mediumPrefab, strongPrefab, PlayerObject, PlayerScript);
+        _itemDropper = new ItemDropper(itemPrefabs, PlayerScript);
+        
+        _waveBuilder = new WaveBuilder(weakPrefab, mediumPrefab, strongPrefab, PlayerObject, PlayerScript, _itemDropper);
     }
 
     public void BuildFastWave()
@@ -47,6 +51,8 @@ public class WaveDirector
             Enemy enemy = _currentWave.Enemies[i];
             enemy.EnemyUpdate();
         }
+        
+        _itemDropper.ItemUpdate();
     }
     
     public bool IsWaveActive()

@@ -7,7 +7,7 @@ public class Enemy : IDamagable
 {
     
     /// <summary>
-    /// TODO: refactor enemy collisiondetection
+    /// TODO: refactor enemy collisiondetection (use overlapsphere)
     /// </summary>
     private NavMeshAgent _agent;
     private GameObject _playerObject;
@@ -22,11 +22,13 @@ public class Enemy : IDamagable
     private int _maxdistance;
     private int _maxHealth;
     
+    private ItemDropper _itemDropper;
+    
     private LayerMask _playerLayerMask = LayerMask.GetMask("Player");
     
     public float health { get; set; }
 
-    public Enemy(NavMeshAgent agent, GameObject playerObject, Player playerScript, GameObject enemyGameObject, int damage, int speed, int hitRadius, int maxdistance, int maxHealth, Wave wave)
+    public Enemy(NavMeshAgent agent, GameObject playerObject, Player playerScript, GameObject enemyGameObject, int damage, int speed, int hitRadius, int maxdistance, int maxHealth, Wave wave, ItemDropper itemDropper)
     {
         _agent = agent;
         _playerObject = playerObject;
@@ -38,6 +40,7 @@ public class Enemy : IDamagable
         _maxdistance = maxdistance;
         _maxHealth = maxHealth;
         _wave = wave;
+        _itemDropper = itemDropper;
         
         _agent.speed = _speed;
         health = _maxHealth;
@@ -87,8 +90,19 @@ public class Enemy : IDamagable
         
         if (health <= 0)
         {
-            _wave.RemoveEnemy(this);
-            UnityEngine.Object.Destroy(_enemyGameObject);
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        int Chance = UnityEngine.Random.Range(0, 100);
+        if (Chance < 30)
+        {
+            _itemDropper.SpawnItem(_enemyGameObject.transform.position); 
+        }
+        
+        _wave.RemoveEnemy(this);
+        UnityEngine.Object.Destroy(_enemyGameObject);
     }
 }

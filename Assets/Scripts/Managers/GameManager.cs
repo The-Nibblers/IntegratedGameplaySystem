@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,6 +11,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _mediumPrefab;
     [SerializeField] private GameObject _strongPrefab;
     
+    [Header("Item prefabs")]
+    [SerializeField] private List<GameObject> _itemPrefabs;  
+    
     private WaveDirector _waveDirector;
     
     
@@ -17,7 +21,7 @@ public class GameManager : MonoBehaviour
     {
         _player = new Player(_playerGameObject);
         Cursor.lockState = CursorLockMode.Locked;
-        _waveDirector = new WaveDirector(_weakPrefab, _mediumPrefab, _strongPrefab, _playerGameObject, _player);
+        _waveDirector = new WaveDirector(_weakPrefab, _mediumPrefab, _strongPrefab, _playerGameObject, _player, _itemPrefabs);
 
         _waveDirector.BuildFastWave();
     }

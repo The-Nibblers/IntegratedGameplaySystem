@@ -5,6 +5,7 @@ public class Wave
     public List<Enemy> Enemies { get; private set; }
     private Dictionary<GameObject, Enemy> _enemyMap = new Dictionary<GameObject, Enemy>();
     
+    private ItemDropper _itemDropper;
     public bool WaveIsActive { get; private set; }
 
     public Wave()
