@@ -99,7 +99,8 @@ public class Enemy : IDamagable
         int Chance = UnityEngine.Random.Range(0, 100);
         if (Chance < 30)
         {
-            _itemDropper.SpawnItem(_enemyGameObject.transform.position); 
+            Vector3 SpawnPosition = new Vector3(_enemyGameObject.transform.position.x, _enemyGameObject.transform.position.y + 1, _enemyGameObject.transform.position.z);
+            _itemDropper.SpawnItem(SpawnPosition); 
         }
         
         _wave.RemoveEnemy(this);
