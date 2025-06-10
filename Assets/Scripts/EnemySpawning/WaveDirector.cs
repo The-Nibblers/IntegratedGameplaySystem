@@ -40,4 +40,9 @@ public class WaveDirector
             enemy.EnemyUpdate();
         }
     }
+    
+    public bool IsWaveActive()
+    {
+        return _currentWave != null && _currentWave.WaveIsActive;
+    }
 }

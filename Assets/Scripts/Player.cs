@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour, IDamagable
+public class Player : IDamagable
 {
+    /// <summary>
+    /// TODO: Health logic
+    /// </summary>
     private InputManager _inputManager;
 
     private ICommand _shootCommand;

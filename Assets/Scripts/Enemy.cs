@@ -5,6 +5,10 @@ using UnityEngine.Serialization;
 
 public class Enemy : IDamagable
 {
+    
+    /// <summary>
+    /// TODO: refactor enemy collisiondetection
+    /// </summary>
     private NavMeshAgent _agent;
     private GameObject _playerObject;
     private Player _playerScript;
@@ -16,6 +20,8 @@ public class Enemy : IDamagable
     private int _hitRadius;
     private int _maxdistance;
     private int _maxHealth;
+    
+    private LayerMask _playerLayerMask = LayerMask.GetMask("Player");
     
     public int health { get; set; }
 
@@ -49,12 +55,10 @@ public class Enemy : IDamagable
         
         if (Physics.SphereCast(this._enemyGameObject.transform.position, _hitRadius,_playerObject.transform.position, out hit,_maxdistance))
         {
-            Debug.Log("Hit");
-            if (hit.transform.CompareTag("Player")) return;
-            Debug.Log("player");
+            if (((1 << hit.transform.gameObject.layer) & _playerLayerMask) == 0) return;
             _playerScript.TryDamage(_damage);
             
-            //destrpy gameobject
+            //destroy gameobject
             _wave.RemoveEnemy(this);
             UnityEngine.Object.Destroy(_enemyGameObject);
         }
@@ -62,18 +66,24 @@ public class Enemy : IDamagable
 
     private void Move()
     {
-        _agent.SetDestination(_playerObject.transform.position);
+        if (_agent.isOnNavMesh)
+        {
+            _agent.SetDestination(_playerObject.transform.position);   
+        }
     }
     
     public void TryDamage(int amount)
     {
-        Debug.Log(amount);
+        takeDamage(amount);
     }
 
     public void takeDamage(int amount)
     {
         health -= amount;
-
+        
+        Debug.Log(amount + " damage taken" + health + " Current health");
+        
+        
         if (health <= 0)
         {
             _wave.RemoveEnemy(this);

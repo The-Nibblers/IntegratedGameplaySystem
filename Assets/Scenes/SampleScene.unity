@@ -234,7 +234,7 @@ GameObject:
   - component: {fileID: 175083756}
   - component: {fileID: 175083755}
   - component: {fileID: 175083758}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -653,7 +653,7 @@ GameObject:
   - component: {fileID: 494259013}
   - component: {fileID: 494259012}
   - component: {fileID: 494259015}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1090,7 +1090,7 @@ GameObject:
   - component: {fileID: 1147401107}
   - component: {fileID: 1147401106}
   m_Layer: 3
-  m_Name: Capsule
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1265,7 +1265,7 @@ GameObject:
   - component: {fileID: 1401811042}
   - component: {fileID: 1401811041}
   - component: {fileID: 1401811044}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1407,6 +1407,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerGameObject: {fileID: 1147401104}
+  _weakPrefab: {fileID: 5855944177362020998, guid: 62206a598027a0e40858b50252865246, type: 3}
+  _mediumPrefab: {fileID: 6736161956789634785, guid: 0dd178611034b7b4496b00b0166c2be5, type: 3}
+  _strongPrefab: {fileID: 5448460694220842728, guid: f35ae3d0e7c4e5e4097c837d6f742640, type: 3}
 --- !u!4 &1807448667
 Transform:
   m_ObjectHideFlags: 0
@@ -1435,7 +1438,7 @@ GameObject:
   - component: {fileID: 1980490226}
   - component: {fileID: 1980490225}
   - component: {fileID: 1980490228}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
