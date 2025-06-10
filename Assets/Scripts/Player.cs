@@ -16,7 +16,7 @@ public class Player : IDamagable
     
     private float _moveSpeed = 5f;
     private float _lookSensitivity = 0.2f;
-    private int _damage;
+    private int _damage = 20;
     
     public int health { get; set; }
 
@@ -71,17 +71,22 @@ public class Player : IDamagable
 
     public void Shoot()
     {
-        if (Physics.Raycast(_playerGameObject.transform.position, _playerGameObject.transform.forward,
+        if (Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward,
                 out RaycastHit hit))
         {
-            Debug.Log("HIT: " + hit.transform.name);
-            Debug.Log("HIT Layer: " + LayerMask.LayerToName(hit.transform.gameObject.layer));
+            if (hit.transform.gameObject.layer == EnemyMask) return;
+            
+            Debug.Log(hit.collider.gameObject.name);
+            if (_currentWave == null) return;
+
+            Debug.Log("wave isnt null");
+            Enemy enemy = _currentWave.GetEnemyByGameObject(hit.transform.gameObject);
+            if (enemy != null)
+            {
+                Debug.Log("Enemy isnt null");
+                enemy.TryDamage(_damage);
+            }
         }
-        else
-        {
-            Debug.Log("NO HIT AT ALL");
-        }
-        
     }
     public void TryDamage(int amount)
     {
