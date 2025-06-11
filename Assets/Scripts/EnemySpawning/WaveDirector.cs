@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 public class WaveDirector
 {
@@ -91,7 +90,6 @@ public class WaveDirector
         {
             BuildFastWave();
             WaveCounter++;
-            Debug.Log("Initial wave");
             return;
         }
 

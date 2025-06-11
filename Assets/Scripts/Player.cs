@@ -6,6 +6,7 @@ public class Player : IDamagable
     private InputManager _inputManager;
 
     private ICommand _shootCommand;
+    private ICommand _quitCommand;
     private IDirectionalCommand _moveCommand;
     private IDirectionalCommand _lookCommand;
     
@@ -42,8 +43,9 @@ public class Player : IDamagable
         _shootCommand = new ShootCommand(this);
         _moveCommand = new MoveCommand(this);
         _lookCommand = new LookCommand(this);
+        _quitCommand = new QuitCommand(this);
         
-        _inputManager = new InputManager(_shootCommand, _moveCommand, _lookCommand);
+        _inputManager = new InputManager(_shootCommand, _moveCommand, _lookCommand, _quitCommand);
         
         _playerCamera = Camera.main;
         _playerGameObject = playerGameObject;
@@ -181,5 +183,10 @@ public class Player : IDamagable
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
         _uiManager.EnableDeathUI();
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

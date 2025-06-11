@@ -43,10 +43,6 @@ public class GameManager : MonoBehaviour
             {
                 _uiItems.Add(entry.key, entry.value);
             }
-            else
-            {
-                Debug.LogWarning("Duplicate key: " + entry.key);
-            }
         }
         
         _uiManager = new UIManager(_uiItems, _deathUI, _restartButton, _quitButton);

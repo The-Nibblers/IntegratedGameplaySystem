@@ -25,7 +25,6 @@ public class ItemDropper
     {
         if (_ItemPrefabs == null || _ItemPrefabs.Count == 0)
         {
-            Debug.LogWarning("No item prefabs to spawn!");
             return;
         }
 

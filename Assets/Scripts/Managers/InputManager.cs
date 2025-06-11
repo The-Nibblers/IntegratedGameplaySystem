@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class InputManager
 {
     private ICommand _shootCommand;
+    private ICommand _quitCommand;
     private IDirectionalCommand _moveCommand;
     private IDirectionalCommand _lookCommand;
     
@@ -11,11 +12,12 @@ public class InputManager
     private Vector2 _MoveInput;
     private Vector2 _LookInput;
 
-    public InputManager(ICommand shootCommand, IDirectionalCommand moveCommand, IDirectionalCommand lookCommand)
+    public InputManager(ICommand shootCommand, IDirectionalCommand moveCommand, IDirectionalCommand lookCommand, ICommand quitCommand)
     {
         _shootCommand = shootCommand;
         _moveCommand = moveCommand;
         _lookCommand = lookCommand;
+        _quitCommand = quitCommand;
         
         _inputActions = new PlayerInputActions();
         _inputActions.Enable();
@@ -26,7 +28,8 @@ public class InputManager
         _inputActions.Gameplay.Look.performed += ctx => _LookInput = ctx.ReadValue<Vector2>();
         _inputActions.Gameplay.Look.canceled += ctx => _LookInput = Vector2.zero;
 
-        _inputActions.Gameplay.Shoot.performed += ctx => _shootCommand.Execute(); // shoot input handled here
+        _inputActions.Gameplay.Shoot.performed += ctx => _shootCommand.Execute();
+        _inputActions.Gameplay.Quit.performed += ctx => _quitCommand.Execute();
     }
 
     public void HandleInput()
