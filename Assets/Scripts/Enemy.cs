@@ -5,10 +5,6 @@ using UnityEngine.Serialization;
 
 public class Enemy : IDamagable
 {
-    
-    /// <summary>
-    /// TODO: refactor enemy collisiondetection (use overlapsphere)
-    /// </summary>
     private NavMeshAgent _agent;
     private GameObject _playerObject;
     private Player _playerScript;
@@ -54,17 +50,20 @@ public class Enemy : IDamagable
 
     private void CollisionDetection()
     {
-        RaycastHit hit;
-        Vector3 direction = (_playerObject.transform.position - _enemyGameObject.transform.position).normalized;
-        
-        if (Physics.SphereCast(this._enemyGameObject.transform.position, _hitRadius,_playerObject.transform.position, out hit,_maxdistance))
+        // Make big invisible sphere around enemy
+        Collider[] hitColliders = Physics.OverlapSphere(_enemyGameObject.transform.position, _hitRadius, _playerLayerMask);
+
+        foreach (var hitCollider in hitColliders)
         {
-            if (((1 << hit.transform.gameObject.layer) & _playerLayerMask) == 0) return;
-            _playerScript.TryDamage(_damage);
-            
-            //destroy gameobject
-            _wave.RemoveEnemy(this);
-            UnityEngine.Object.Destroy(_enemyGameObject);
+            if (hitCollider.gameObject == _playerObject)
+            {
+                _playerScript.TryDamage(_damage);
+
+                // enemy go bye bye after bonk
+                _wave.RemoveEnemy(this);
+                UnityEngine.Object.Destroy(_enemyGameObject);
+                break;
+            }
         }
     }
 
