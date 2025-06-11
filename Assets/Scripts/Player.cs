@@ -22,6 +22,8 @@ public class Player : IDamagable
     
     private float _nextFireTime;
     
+    private Animator _gunAnimator;
+    
     public float health { get; set; }
 
     private LayerMask _enemyMask = LayerMask.GetMask("Enemy");
@@ -32,7 +34,7 @@ public class Player : IDamagable
     
     private UIManager _uiManager;
 
-    public Player(GameObject playerGameObject, UIManager uiManager)
+    public Player(GameObject playerGameObject, UIManager uiManager, Animator gunAnimator)
     {
         _shootCommand = new ShootCommand(this);
         _moveCommand = new MoveCommand(this);
@@ -44,6 +46,8 @@ public class Player : IDamagable
         _playerGameObject = playerGameObject;
         
         _uiManager = uiManager;
+
+        _gunAnimator = gunAnimator;
 
         _playerStats = new BasePlayerStats();
 
@@ -90,9 +94,11 @@ public class Player : IDamagable
 
     public void Shoot()
     {
-        // Chatgerpeter say: check fire cooldown first
         if (Time.time < _nextFireTime)
             return;
+        
+        _gunAnimator.speed = _fireRate;
+        _gunAnimator.SetTrigger("Shoot");
 
         _nextFireTime = Time.time + 1f / _fireRate;
 
@@ -108,6 +114,7 @@ public class Player : IDamagable
             if (enemy != null)
                 enemy.TryDamage(_damage);
         }
+        
     }
     
     //Decorator functions
