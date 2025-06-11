@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class Player : IDamagable
 {
@@ -33,6 +34,8 @@ public class Player : IDamagable
     private IPlayerStats _playerStats;
     
     private UIManager _uiManager;
+    
+    private CharacterController _playerCharacterController;
 
     public Player(GameObject playerGameObject, UIManager uiManager, Animator gunAnimator)
     {
@@ -60,6 +63,8 @@ public class Player : IDamagable
         _uiManager.UpdateUi("HealthUI", _maxHealth);
         _uiManager.UpdateUi("DamageUI", _damage);
         _uiManager.UpdateUi("SpeedUI", _moveSpeed);
+        
+        _playerCharacterController = playerGameObject.GetComponent<CharacterController>();
     }
     
     public void playerUpdate()
@@ -75,7 +80,7 @@ public class Player : IDamagable
     public void Move(Vector2 input)
     {
         Vector3 move = (_playerGameObject.transform.right * input.x + _playerGameObject.transform.forward * input.y);
-        _playerGameObject.transform.position += move * (_moveSpeed * Time.deltaTime);
+        _playerCharacterController.Move(move * (_moveSpeed * Time.deltaTime));
     }
 
 

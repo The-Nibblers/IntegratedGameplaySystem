@@ -94,7 +94,7 @@ public class Enemy : IDamagable
     private void Die()
     {
         int Chance = UnityEngine.Random.Range(0, 100);
-        if (Chance < 30)
+        if (Chance < 40)
         {
             Vector3 SpawnPosition = new Vector3(_enemyGameObject.transform.position.x, _enemyGameObject.transform.position.y + 1, _enemyGameObject.transform.position.z);
             _itemDropper.SpawnItem(SpawnPosition); 
