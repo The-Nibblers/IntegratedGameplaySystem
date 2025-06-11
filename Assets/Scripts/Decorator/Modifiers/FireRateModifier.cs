@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class FireRateModifier : StatsDecorator
 {
-    private float _multiplier;
+    private float _bonus;
 
     public FireRateModifier(IPlayerStats innerStats, float multiplier) : base(innerStats)
     {
-        _multiplier = multiplier;
+        _bonus = multiplier;
     }
 
-    public override float GetFireRate() => _innerStats.GetFireRate() * _multiplier;
+    public override float GetFireRate() => _innerStats.GetFireRate() + _bonus;
 }

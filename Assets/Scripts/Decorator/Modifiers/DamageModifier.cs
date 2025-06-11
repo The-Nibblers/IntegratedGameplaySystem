@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class DamageModifier : StatsDecorator
 {
-    private float _multiplier;
+    private float _bonus;
     
     public DamageModifier(IPlayerStats innerStats, float multiplier) : base(innerStats)
     {
-        _multiplier = multiplier;
+        _bonus = multiplier;
     }
     
-    public override float GetDamage() => _innerStats.GetDamage() * _multiplier;
+    
+    public override float GetDamage() => _innerStats.GetDamage() + _bonus;
 }

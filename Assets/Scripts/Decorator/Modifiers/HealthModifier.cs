@@ -9,5 +9,5 @@ public class HealthModifier : StatsDecorator
         _bonus = multiplier;
     }
     
-    public override float GetMaxHealth() => _innerStats.GetMaxHealth() * _bonus;
+    public override float GetMaxHealth() => _innerStats.GetMaxHealth() + _bonus;
 }

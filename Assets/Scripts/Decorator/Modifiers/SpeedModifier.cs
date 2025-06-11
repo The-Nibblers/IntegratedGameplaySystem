@@ -2,12 +2,19 @@ using UnityEngine;
 
 public class SpeedModifier : StatsDecorator
 {
-    private float _multiplier;
-
-    public SpeedModifier(IPlayerStats innerStats, float multiplier) : base(innerStats)
+    private float _bonus;
+    private float _maxBonus = 15f;
+    public SpeedModifier(IPlayerStats innerStats, float Bonus) : base(innerStats)
     {
-        _multiplier = multiplier;
+        _bonus = Bonus;
+
+        float moveSpeed = innerStats.GetMoveSpeed();
+        if (moveSpeed + _bonus >= _maxBonus)
+        {
+            _bonus = 0;
+        }
     }
     
-    public override float GetMoveSpeed() => _innerStats.GetMoveSpeed() * _multiplier;
+    public override float GetMoveSpeed() => _innerStats.GetMoveSpeed() + _bonus;
+   
 }

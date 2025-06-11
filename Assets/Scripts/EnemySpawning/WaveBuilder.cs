@@ -4,13 +4,9 @@ using UnityEngine.AI;
 
 public class WaveBuilder : IWaveBuilder
 {
-    
-    /// <summary>
-    /// TODO: tweak enemy values
-    /// </summary>
     private Wave _wave = new Wave();
 
-    private GameObject _PlayerObject;
+    private GameObject _PlayerObject;       
     private Player _playerScript;
     
     private ItemDropper _itemDropper;
@@ -46,7 +42,7 @@ public class WaveBuilder : IWaveBuilder
 
             GameObject weakPrefabInstance = UnityEngine.Object.Instantiate(_weakPrefab, spawnPosition, Quaternion.identity);
             NavMeshAgent agent = weakPrefabInstance.GetComponent<NavMeshAgent>();
-            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, weakPrefabInstance, 10, 4, 1, 1, 20, _wave, _itemDropper ));
+            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, weakPrefabInstance, 10, 6, 1, 1, 20, _wave, _itemDropper ));
         }
     }
 
@@ -59,7 +55,7 @@ public class WaveBuilder : IWaveBuilder
 
             GameObject mediumPrefabInstance = UnityEngine.Object.Instantiate(_MediumPrefab, spawnPosition, Quaternion.identity);
             NavMeshAgent agent = mediumPrefabInstance.GetComponent<NavMeshAgent>();
-            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, mediumPrefabInstance, 20, 2, 2, 1, 50, _wave, _itemDropper));
+            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, mediumPrefabInstance, 20, 4, 2, 1, 50, _wave, _itemDropper));
         }
     }
 
@@ -72,7 +68,7 @@ public class WaveBuilder : IWaveBuilder
 
             GameObject strongPrefabInstance = UnityEngine.Object.Instantiate(_StrongPrefab, spawnPosition, Quaternion.identity);
             NavMeshAgent agent = strongPrefabInstance.GetComponent<NavMeshAgent>();
-            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, strongPrefabInstance, 40, 1, 4, 1, 100, _wave, _itemDropper));
+            _wave.AddEnemy(new Enemy(agent, _PlayerObject, _playerScript, strongPrefabInstance, 40, 2, 4, 1, 100, _wave, _itemDropper));
         }
     }
 
