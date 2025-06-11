@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
     [Header("GunAnimator")] [SerializeField]
     private Animator _gunAnimator;
     
+    private bool _waveSpawning = false;
+    
     private WaveDirector _waveDirector;
     
     
@@ -46,7 +49,7 @@ public class GameManager : MonoBehaviour
         
         _waveDirector = new WaveDirector(_weakPrefab, _mediumPrefab, _strongPrefab, _playerGameObject, _player, _itemPrefabs);
 
-        _waveDirector.BuildFastWave();
+        _waveDirector.SpawnWave();
     }
     
     void Update()
@@ -54,9 +57,17 @@ public class GameManager : MonoBehaviour
         _player.playerUpdate();
         _waveDirector.UpdateEnemies();
 
-        if (!_waveDirector.IsWaveActive())
+        if (!_waveDirector.IsWaveActive() && !_waveSpawning)
         {
-            _waveDirector.BuildMediumWave();
+            StartCoroutine(SpawnWave());
         }
+    }
+
+    IEnumerator SpawnWave()
+    {
+        _waveSpawning = true;
+        yield return new WaitForSeconds(2);
+        _waveDirector.SpawnWave();
+        _waveSpawning = false;
     }
 }
