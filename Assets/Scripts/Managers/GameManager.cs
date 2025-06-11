@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _deathUI;
     [SerializeField] private Button _restartButton;
     [SerializeField] private Button _quitButton;
+
+    [SerializeField] private GameObject _startMenu;
     
     private Dictionary<string, TextMeshProUGUI> _uiItems = new Dictionary<string, TextMeshProUGUI>();
     private UIManager _uiManager;
@@ -47,11 +49,8 @@ public class GameManager : MonoBehaviour
         
         _uiManager = new UIManager(_uiItems, _deathUI, _restartButton, _quitButton);
         _player = new Player(_playerGameObject, _uiManager, _gunAnimator);
-        Cursor.lockState = CursorLockMode.Locked;
         
         _waveDirector = new WaveDirector(_weakPrefab, _mediumPrefab, _strongPrefab, _playerGameObject, _player, _itemPrefabs);
-
-        _waveDirector.SpawnWave();
     }
     
     void Update()
@@ -71,5 +70,20 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2);
         _waveDirector.SpawnWave();
         _waveSpawning = false;
+    }
+
+    public void StartGameButton()
+    {
+        _startMenu.gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
+        if (!_waveDirector.IsWaveActive() && !_waveSpawning)
+        {
+            StartCoroutine(SpawnWave());   
+        }
+    }
+
+    public void QuitGameButton()
+    {
+        Application.Quit();
     }
 }
