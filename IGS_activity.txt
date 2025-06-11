@@ -1,0 +1,42 @@
+@startuml
+start
+:Initialize player and stats;
+:Start wave timer;
+
+repeat
+  :Spawn wave enemies;
+  fork
+    repeat
+      :Enemies move toward player;
+      if (Enemies touch player?) then (yes)
+        :Player take damage;
+        :Enemy disappears (no item drop);
+      else (no)
+      endif
+
+      if (Enemies die?) then (yes)
+        :Chance to drop item;
+        if (Item dropped?) then (yes)
+          :Player get item;
+          :Update player stats;
+        endif
+      endif
+
+      if (Player dead?) then (yes)
+        stop
+      endif
+    repeat while (Enemies alive)
+  fork again
+    :Player shoot and fight enemies;
+  end fork
+
+  if (Max waves reached?) then (yes)
+    :Spawn big crazy wave;
+  else (no)
+    :Prepare next wave;
+  endif
+
+repeat while (Not player dead and waves left)
+
+stop
+@enduml
