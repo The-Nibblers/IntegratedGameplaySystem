@@ -1,96 +1,160 @@
 @startuml
 
-interface IDamageable{
-+int health
-void tryDamage(int amount);
-void takeDamage(int amount);
-}
-interface IPlayerStats{
-+PlayerStats
-}
-interface ICommand{
-void execute();
-}
-interface IWaveBuilder{
-void BuildStrong();
-void BuildWeak();
-void BuildMedium();
-wave GetWave();
+interface IDamageable {
+    +int health
+    void tryDamage(int amount)
+    void takeDamage(int amount)
 }
 
-class GameManager{
- -playervars
-void Awake();
-void Update();
+interface IPlayerStats {
+    +PlayerStats
 }
-class BasePlayerStats{
--PlayerVars
+
+interface ICommand {
+    void execute()
 }
+
+interface IDirectionalCommand {
+    void execute()
+    void setDirection(Direction dir)  'example for direction input
+}
+
+interface IWaveBuilder {
+    void BuildStrong()
+    void BuildWeak()
+    void BuildMedium()
+    Wave GetWave()
+}
+
+enum ItemType
+
+enum UIItemType
+
+class GameManager {
+    -playervars
+    void Awake()
+    void Update()
+}
+
+class BasePlayerStats {
+    -PlayerVars
+}
+
 class StatsDecorator
 
-class FireRateModifier{
- -float multiplier;
-}
-class HealthModifier{
--float multiplier
+class DamageModifier {
+    -float bonus
 }
 
-class Player{
-void Shoot();
+class FireRateModifier {
+    -float bonus
 }
-class InputHandler
-{
--ICommand MoveCommand;
--ICommand ShootCommand;
-void HandleInput();
+
+class HealthModifier {
+    -float bonus
+}
+
+class SpeedModifier {
+    -float bonus
+}
+
+class Player {
+    void Shoot()
+    UIManager uiManager  'new
+}
+
+class InputHandler {
+    -ICommand ShootCommand
+    -ICommand QuitCommand
+    -IDirectionalCommand LookCommand
+    -IDirectionalCommand MoveCommand
+    void HandleInput()
 }
 
 class MoveCommand
+
+class LookCommand
+
 class ShootCommand
 
-class Enemy{
-+EnemyStats
+class QuitCommand
+
+class Enemy {
+    +EnemyStats
+    ItemDropper itemDropper
 }
 
-class Wave{
-+List<Enemies> enemies
-}
-class WaveBuilder{
-void BuildStrong();
-void BuildWeak();
-void BuildMedium();
-Wave GetWave();
-}
-class WaveDirector
-{
-void BuildExampleWave();
+class Wave {
+    +List<Enemy> enemies
 }
 
+class WaveBuilder {
+    void BuildStrong()
+    void BuildWeak()
+    void BuildMedium()
+    Wave GetWave()
+}
+
+class WaveDirector {
+    void BuildExampleWave()
+}
+
+class ItemDropper {
+    +List<Item> items
+}
+
+class Item {
+    ItemType type
+}
+
+class UIManager {
+    +List<UIItemEntry> itemEntries
+    UIItems uiItems
+}
+
+class UIItemEntry {
+    UIItemType key
+    int value
+}
+
+class UIItems
 
 IDamageable <.. Player
 IDamageable <.. Enemy
 
-ICommand <.. MoveCommand
 ICommand <.. ShootCommand
+ICommand <.. QuitCommand
 
-InputHandler *-- MoveCommand
+IDirectionalCommand <.. LookCommand
+IDirectionalCommand <.. MoveCommand
+
 InputHandler *-- ShootCommand
+InputHandler *-- QuitCommand
+InputHandler *-- LookCommand
+InputHandler *-- MoveCommand
 
 Player --> InputHandler : Uses
+Player --> UIManager : Has
 
 IPlayerStats <.. BasePlayerStats
 GameManager *-- BasePlayerStats
 GameManager *-- Player
+GameManager *-- WaveDirector
 
-StatsDecorator <.. IPlayerStats
-FireRateModifier --> StatsDecorator : Inherits
-HealthModifier --> StatsDecorator : Inherits
+StatsDecorator <|.. DamageModifier
+StatsDecorator <|.. FireRateModifier
+StatsDecorator <|.. HealthModifier
+StatsDecorator <|.. SpeedModifier
 
-IWaveBuilder <.. WaveBuilder
+WaveBuilder ..|> IWaveBuilder
 WaveBuilder --> Wave : Uses
 WaveDirector --> WaveBuilder : Uses
 Wave --> Enemy : Uses
 
-GameManager *-- WaveDirector
+Enemy --> ItemDropper : Has
+ItemDropper --> Item : Has
+
+UIManager --> UIItemEntry : Contains
+UIManager --> UIItems : Contains
 
 @enduml
