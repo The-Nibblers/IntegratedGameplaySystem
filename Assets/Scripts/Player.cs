@@ -3,7 +3,7 @@ using UnityEngine;
 public class Player : IDamagable
 {
     /// <summary>
-    /// TODO: Health logic
+    /// TODO: death logic
     /// </summary>
     private InputManager _inputManager;
 
@@ -148,9 +148,10 @@ public class Player : IDamagable
 
     public void takeDamage(float amount)
     {
-        health -= amount;
+        _maxHealth -= amount;
+        _uiManager.UpdateUi("HealthUI", _maxHealth);
 
-        if (health <= 0)
+        if (_maxHealth <= 0)
         {
             Die();
         }

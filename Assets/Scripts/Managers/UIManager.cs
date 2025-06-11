@@ -13,10 +13,9 @@ public class UIManager
 
   public void UpdateUi(string Item, float value)
   {
-    Debug.Log("switch called");
     if (Enum.TryParse<UIItems.UIItemType>(Item, true, out var uiItem))
     {
-      string key = uiItem.ToString(); // "DamageUI", "HealthUI", etc.
+      string key = uiItem.ToString();
 
       switch (uiItem)
       {
@@ -24,10 +23,6 @@ public class UIManager
           if (_uiObjects.TryGetValue(key, out TextMeshProUGUI uiObjectDamage))
           {
             uiObjectDamage.text = "Damage: " + value;
-          }
-          else
-          {
-            Debug.Log("Key not found in _uiObjects: " + key);
           }
           break;
 
