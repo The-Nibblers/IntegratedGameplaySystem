@@ -11,27 +11,45 @@ public class UIManager
     _uiObjects = uiObjects;
   }
 
-  public void UpdateUi(string Item, int value)
+  public void UpdateUi(string Item, float value)
   {
+    Debug.Log("switch called");
     if (Enum.TryParse<UIItems.UIItemType>(Item, true, out var uiItem))
     {
+      string key = uiItem.ToString(); // "DamageUI", "HealthUI", etc.
+
       switch (uiItem)
       {
         case UIItems.UIItemType.DamageUI:
-          _uiObjects.TryGetValue(Item, out TextMeshProUGUI  uiObjectDamage);
-          uiObjectDamage.text = "Damage: " + value;
+          if (_uiObjects.TryGetValue(key, out TextMeshProUGUI uiObjectDamage))
+          {
+            uiObjectDamage.text = "Damage: " + value;
+          }
+          else
+          {
+            Debug.Log("Key not found in _uiObjects: " + key);
+          }
           break;
+
         case UIItems.UIItemType.HealthUI:
-          _uiObjects.TryGetValue(Item, out TextMeshProUGUI  uiObjectHealth);
-          uiObjectHealth.text = "Health: " + value;
+          if (_uiObjects.TryGetValue(key, out TextMeshProUGUI uiObjectHealth))
+          {
+            uiObjectHealth.text = "Health: " + value;
+          }
           break;
+
         case UIItems.UIItemType.SpeedUI:
-          _uiObjects.TryGetValue(Item, out TextMeshProUGUI  uiObjectSpeed);
-          uiObjectSpeed.text = "Speed: " + value;
+          if (_uiObjects.TryGetValue(key, out TextMeshProUGUI uiObjectSpeed))
+          {
+            uiObjectSpeed.text = "Speed: " + value;
+          }
           break;
+
         case UIItems.UIItemType.FireRateUI:
-          _uiObjects.TryGetValue(Item, out TextMeshProUGUI  uiObjectFirerate);
-          uiObjectFirerate.text = "FireRate: " + value;
+          if (_uiObjects.TryGetValue(key, out TextMeshProUGUI uiObjectFirerate))
+          {
+            uiObjectFirerate.text = "FireRate: " + value;
+          }
           break;
       }
     }

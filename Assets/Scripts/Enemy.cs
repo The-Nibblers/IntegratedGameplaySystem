@@ -85,9 +85,6 @@ public class Enemy : IDamagable
     {
         health -= amount;
         
-        Debug.Log(amount + " damage taken" + health + " Current health");
-        
-        
         if (health <= 0)
         {
             Die();

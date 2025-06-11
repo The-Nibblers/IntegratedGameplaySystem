@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -15,7 +16,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> _itemPrefabs;
     
     [Header("UI Items")]
-    [SerializeField] private List<GameObject> _uiItems;
+    [SerializeField] private List<UIItemEntry> _uiItemList = new List<UIItemEntry>();
+    private Dictionary<string, TextMeshProUGUI> _uiItems = new Dictionary<string, TextMeshProUGUI>();
     private UIManager _uiManager;
     
     private WaveDirector _waveDirector;
@@ -23,8 +25,22 @@ public class GameManager : MonoBehaviour
     
     void Start()
     {
-        _player = new Player(_playerGameObject);
+        foreach (var entry in _uiItemList)
+        {
+            if (!_uiItems.ContainsKey(entry.key))
+            {
+                _uiItems.Add(entry.key, entry.value);
+            }
+            else
+            {
+                Debug.LogWarning("Duplicate key: " + entry.key);
+            }
+        }
+        
+        _uiManager = new UIManager(_uiItems);
+        _player = new Player(_playerGameObject, _uiManager);
         Cursor.lockState = CursorLockMode.Locked;
+        
         _waveDirector = new WaveDirector(_weakPrefab, _mediumPrefab, _strongPrefab, _playerGameObject, _player, _itemPrefabs);
 
         _waveDirector.BuildFastWave();

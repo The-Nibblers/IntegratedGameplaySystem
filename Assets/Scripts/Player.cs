@@ -3,7 +3,7 @@ using UnityEngine;
 public class Player : IDamagable
 {
     /// <summary>
-    /// TODO: Health logic, fire cooldown
+    /// TODO: Health logic
     /// </summary>
     private InputManager _inputManager;
 
@@ -20,6 +20,8 @@ public class Player : IDamagable
     private float _maxHealth;
     private float _fireRate;
     
+    private float _nextFireTime;
+    
     public float health { get; set; }
 
     private LayerMask _enemyMask = LayerMask.GetMask("Enemy");
@@ -27,8 +29,10 @@ public class Player : IDamagable
     private Wave _currentWave;
     
     private IPlayerStats _playerStats;
+    
+    private UIManager _uiManager;
 
-    public Player(GameObject playerGameObject)
+    public Player(GameObject playerGameObject, UIManager uiManager)
     {
         _shootCommand = new ShootCommand(this);
         _moveCommand = new MoveCommand(this);
@@ -38,6 +42,8 @@ public class Player : IDamagable
         
         _playerCamera = Camera.main;
         _playerGameObject = playerGameObject;
+        
+        _uiManager = uiManager;
 
         _playerStats = new BasePlayerStats();
 
@@ -46,6 +52,10 @@ public class Player : IDamagable
         _maxHealth = _playerStats.GetMaxHealth();
         _fireRate = _playerStats.GetFireRate();
         
+        _uiManager.UpdateUi("FireRateUI", _fireRate);
+        _uiManager.UpdateUi("HealthUI", _maxHealth);
+        _uiManager.UpdateUi("DamageUI", _damage);
+        _uiManager.UpdateUi("SpeedUI", _moveSpeed);
     }
     
     public void playerUpdate()
@@ -67,66 +77,67 @@ public class Player : IDamagable
 
     public void Look(Vector2 input)
     {
-        // Rotate player left/right
         _playerGameObject.transform.Rotate(Vector3.up * (input.x * _lookSensitivity));
-
-        // Rotate camera up/down (limit it so head no spin 360 like owl!)
+        
         Vector3 currentEuler = _playerCamera.transform.localEulerAngles;
         float desiredPitch = currentEuler.x - input.y * _lookSensitivity;
-
-        // Fix ugly Unity rotation wraparound
+        
         if (desiredPitch > 180) desiredPitch -= 360;
-        desiredPitch = Mathf.Clamp(desiredPitch, -80f, 80f); // Stop neck break
+        desiredPitch = Mathf.Clamp(desiredPitch, -80f, 80f);
 
         _playerCamera.transform.localEulerAngles = new Vector3(desiredPitch, 0, 0);
     }
 
     public void Shoot()
     {
+        // Chatgerpeter say: check fire cooldown first
+        if (Time.time < _nextFireTime)
+            return;
+
+        _nextFireTime = Time.time + 1f / _fireRate;
+
         if (Physics.Raycast(_playerCamera.transform.position, _playerCamera.transform.forward,
                 out RaycastHit hit))
         {
             if (((1 << hit.transform.gameObject.layer) & _enemyMask) == 0)
-            {
-                // Not enemy layer, ignore hit or return
                 return;
-            }
             
-            Debug.Log(hit.collider.gameObject.name);
             if (_currentWave == null) return;
-
-            Debug.Log("wave isnt null");
+            
             Enemy enemy = _currentWave.GetEnemyByGameObject(hit.transform.gameObject);
             if (enemy != null)
-            {
-                Debug.Log("Enemy isnt null");
                 enemy.TryDamage(_damage);
-            }
         }
     }
+    
     //Decorator functions
     public void ChangeFireRate(float modifier)
     {
         _playerStats = new FireRateModifier(_playerStats, modifier);
         _fireRate = _playerStats.GetFireRate();
+        _uiManager.UpdateUi("FireRateUI", _fireRate);
     }
     
     public void ChangeMaxHealth(float modifier)
     {
         _playerStats = new HealthModifier(_playerStats, modifier);
         _maxHealth = _playerStats.GetMaxHealth();
+        _uiManager.UpdateUi("HealthUI", _maxHealth);
+        health = _maxHealth;
     }
     
     public void ChangeDamage(float modifier)
     {
         _playerStats = new DamageModifier(_playerStats, modifier);
         _damage = _playerStats.GetDamage();
+        _uiManager.UpdateUi("DamageUI", _damage);
     }
     
     public void ChangeSpeed(float modifier)
     {
         _playerStats = new SpeedModifier(_playerStats, modifier);
         _moveSpeed = _playerStats.GetMoveSpeed();
+        _uiManager.UpdateUi("SpeedUI", _moveSpeed);
     }
     
     //health logic
