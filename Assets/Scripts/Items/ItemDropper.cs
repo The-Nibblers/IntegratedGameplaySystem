@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-/// <summary>
-/// TODO: Change values of items
-/// </summary>
-
 public class ItemDropper
 {
     private List<GameObject> _spawnedItems = new List<GameObject>();
@@ -70,16 +66,16 @@ public class ItemDropper
             switch (itemType)
             {
                 case Items.ItemTypes.Shoe:
-                    _playerScript.ChangeSpeed(1.2f);
+                    _playerScript.ChangeSpeed(1f);
                     break;
                 case Items.ItemTypes.Bullet:
-                    _playerScript.ChangeDamage(1.2f);
+                    _playerScript.ChangeDamage(5f);
                     break;
                 case Items.ItemTypes.Magazine:
-                    _playerScript.ChangeFireRate(1.2f);
+                    _playerScript.ChangeFireRate(0.5f);
                     break;
                 case Items.ItemTypes.Syringe:
-                    _playerScript.ChangeMaxHealth(1.2f);
+                    _playerScript.ChangeMaxHealth(20f);
                     break;
                 default:
                     break;

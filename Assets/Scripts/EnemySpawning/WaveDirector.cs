@@ -8,6 +8,11 @@ public class WaveDirector
 
     private Player _playerScript;
     private ItemDropper _itemDropper;
+
+    private bool _isEarlyGame;
+    private bool _isMidGame;
+    private bool _isEndGame;
+    private bool _isPlayerDyingWaves;
     
     /// <summary>
     /// TODO: Make more waves, wave decisions
@@ -21,6 +26,7 @@ public class WaveDirector
         _waveBuilder = new WaveBuilder(weakPrefab, mediumPrefab, strongPrefab, PlayerObject, PlayerScript, _itemDropper);
     }
 
+    //early game waves
     public void BuildFastWave()
     {
         _waveBuilder.BuildWeak(5);
@@ -38,6 +44,84 @@ public class WaveDirector
     public void BuildStrongWave()
     {
         _waveBuilder.BuildStrong(5);
+        _currentWave = _waveBuilder.GetWave();
+        _playerScript.PlayerSetWave(_currentWave);
+    }
+    
+    //mid game waves
+    public void BuildStrongFastWave()
+    {
+        _waveBuilder.BuildWeak(7);
+        _waveBuilder.BuildStrong(5);
+        _currentWave = _waveBuilder.GetWave();
+        _playerScript.PlayerSetWave(_currentWave);
+    }
+    
+    public void BuildStrongMedWave()
+    {
+        _waveBuilder.BuildStrong(5);
+        _waveBuilder.BuildMedium(7);
+        _currentWave = _waveBuilder.GetWave();
+        _playerScript.PlayerSetWave(_currentWave);
+    }
+    
+    public void BuildMedFastWave()
+    {
+        _waveBuilder.BuildWeak(3);
+        _waveBuilder.BuildMedium(10);
+        _currentWave = _waveBuilder.GetWave();
+        _playerScript.PlayerSetWave(_currentWave);
+    }
+
+    public void BuildVeryStrongWave()
+    {
+        _waveBuilder.BuildStrong(14);
+        _currentWave = _waveBuilder.GetWave();
+        _playerScript.PlayerSetWave(_currentWave);
+    }
+
+    public void BuildVeryFastWave()
+    {
+        _waveBuilder.BuildWeak(15);
+        _currentWave = _waveBuilder.GetWave();
+        _playerScript.PlayerSetWave(_currentWave);
+    }
+    
+    //end game waves
+
+    public void BuildEndWeakWave()
+    {
+        _waveBuilder.BuildWeak(10);
+        _waveBuilder.BuildMedium(6);
+        _waveBuilder.BuildStrong(3);
+        _currentWave = _waveBuilder.GetWave();
+        _playerScript.PlayerSetWave(_currentWave);
+    }
+
+    public void BuildEndMediumWave()
+    {
+        _waveBuilder.BuildWeak(5);
+        _waveBuilder.BuildMedium(10);
+        _waveBuilder.BuildStrong(4);
+        _currentWave = _waveBuilder.GetWave();
+        _playerScript.PlayerSetWave(_currentWave);
+    }
+
+    public void BuildEndStrongWave()
+    {
+        _waveBuilder.BuildWeak(5);
+        _waveBuilder.BuildMedium(4);
+        _waveBuilder.BuildStrong(10);
+        _currentWave = _waveBuilder.GetWave();
+        _playerScript.PlayerSetWave(_currentWave);
+    }
+    
+    //YOU WILL DIE WAVE
+    public void BuildFinalWave()
+    {
+        _waveBuilder.BuildWeak(100);
+        _waveBuilder.BuildMedium(100);
+        _waveBuilder.BuildStrong(100);
         _currentWave = _waveBuilder.GetWave();
         _playerScript.PlayerSetWave(_currentWave);
     }
