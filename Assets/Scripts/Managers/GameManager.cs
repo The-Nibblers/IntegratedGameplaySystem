@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +19,11 @@ public class GameManager : MonoBehaviour
     
     [Header("UI Items")]
     [SerializeField] private List<UIItemEntry> _uiItemList = new List<UIItemEntry>();
+
+    [SerializeField] private GameObject _deathUI;
+    [SerializeField] private Button _restartButton;
+    [SerializeField] private Button _quitButton;
+    
     private Dictionary<string, TextMeshProUGUI> _uiItems = new Dictionary<string, TextMeshProUGUI>();
     private UIManager _uiManager;
 
@@ -43,7 +49,7 @@ public class GameManager : MonoBehaviour
             }
         }
         
-        _uiManager = new UIManager(_uiItems);
+        _uiManager = new UIManager(_uiItems, _deathUI, _restartButton, _quitButton);
         _player = new Player(_playerGameObject, _uiManager, _gunAnimator);
         Cursor.lockState = CursorLockMode.Locked;
         

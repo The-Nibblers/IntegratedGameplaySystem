@@ -2,13 +2,25 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager
 {
   private Dictionary<string, TextMeshProUGUI > _uiObjects;
-  public UIManager(Dictionary<string, TextMeshProUGUI > uiObjects)
+
+  private GameObject _deathUI;
+  private Button _restartButton; 
+  private Button _quitButton; 
+  public UIManager(Dictionary<string, TextMeshProUGUI > uiObjects, GameObject deathUI, Button restartButton, Button quitButton)
   {
     _uiObjects = uiObjects;
+    _deathUI = deathUI;
+    _restartButton = restartButton;
+    _quitButton = quitButton;
+    
+    _restartButton.onClick.AddListener(() => SceneManager.LoadScene(SceneManager.GetActiveScene().name));
+    _quitButton.onClick.AddListener(() => Application.Quit());
   }
 
   public void UpdateUi(string Item, float value)
@@ -48,5 +60,11 @@ public class UIManager
           break;
       }
     }
+  }
+
+  public void EnableDeathUI()
+  {
+    _deathUI.gameObject.SetActive(true);
+
   }
 }

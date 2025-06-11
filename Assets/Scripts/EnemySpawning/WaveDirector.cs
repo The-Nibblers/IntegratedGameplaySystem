@@ -24,9 +24,6 @@ public class WaveDirector
     
     private int WaveCounter = 0;
     
-    /// <summary>
-    /// TODO: wave decisions
-    /// </summary>
     public WaveDirector(GameObject weakPrefab, GameObject mediumPrefab, GameObject strongPrefab, GameObject PlayerObject, Player PlayerScript, List<GameObject> itemPrefabs)
     {
         _playerScript = PlayerScript;
@@ -238,7 +235,6 @@ public class WaveDirector
     public bool IsWaveActive()
     {
         bool active = _currentWave != null && _currentWave.WaveIsActive;
-        Debug.Log("IsWaveActive? " + active + " | WaveCounter = " + WaveCounter);
         return active;
     }
 }

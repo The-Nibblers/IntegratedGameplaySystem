@@ -3,9 +3,6 @@ using UnityEngine.TextCore.Text;
 
 public class Player : IDamagable
 {
-    /// <summary>
-    /// TODO: death logic
-    /// </summary>
     private InputManager _inputManager;
 
     private ICommand _shootCommand;
@@ -18,7 +15,6 @@ public class Player : IDamagable
     
     private float _moveSpeed;
     private float _damage;
-    private float _maxHealth;
     private float _fireRate;
     
     private float _nextFireTime;
@@ -36,6 +32,10 @@ public class Player : IDamagable
     private UIManager _uiManager;
     
     private CharacterController _playerCharacterController;
+
+    private bool _canMove = true;
+    private bool _canShoot = true;
+    private bool _canLook = true;
 
     public Player(GameObject playerGameObject, UIManager uiManager, Animator gunAnimator)
     {
@@ -56,11 +56,11 @@ public class Player : IDamagable
 
         _moveSpeed = _playerStats.GetMoveSpeed();
         _damage = _playerStats.GetDamage();
-        _maxHealth = _playerStats.GetMaxHealth();
+        health = _playerStats.GetMaxHealth();
         _fireRate = _playerStats.GetFireRate();
         
         _uiManager.UpdateUi("FireRateUI", _fireRate);
-        _uiManager.UpdateUi("HealthUI", _maxHealth);
+        _uiManager.UpdateUi("HealthUI", health);
         _uiManager.UpdateUi("DamageUI", _damage);
         _uiManager.UpdateUi("SpeedUI", _moveSpeed);
         
@@ -79,6 +79,8 @@ public class Player : IDamagable
 
     public void Move(Vector2 input)
     {
+        if (!_canMove) return;
+        
         Vector3 move = (_playerGameObject.transform.right * input.x + _playerGameObject.transform.forward * input.y);
         _playerCharacterController.Move(move * (_moveSpeed * Time.deltaTime));
     }
@@ -86,6 +88,7 @@ public class Player : IDamagable
 
     public void Look(Vector2 input)
     {
+        if (!_canLook) return;
         _playerGameObject.transform.Rotate(Vector3.up * (input.x * _lookSensitivity));
         
         Vector3 currentEuler = _playerCamera.transform.localEulerAngles;
@@ -99,8 +102,8 @@ public class Player : IDamagable
 
     public void Shoot()
     {
-        if (Time.time < _nextFireTime)
-            return;
+        if (!_canShoot) return;
+        if (Time.time < _nextFireTime) return;
         
         _gunAnimator.speed = _fireRate;
         _gunAnimator.SetTrigger("Shoot");
@@ -133,9 +136,9 @@ public class Player : IDamagable
     public void ChangeMaxHealth(float modifier)
     {
         _playerStats = new HealthModifier(_playerStats, modifier);
-        _maxHealth = _playerStats.GetMaxHealth();
-        _uiManager.UpdateUi("HealthUI", _maxHealth);
-        health = _maxHealth;
+        health = _playerStats.GetMaxHealth();
+        _uiManager.UpdateUi("HealthUI", health);
+        health = health;
     }
     
     public void ChangeDamage(float modifier)
@@ -160,17 +163,23 @@ public class Player : IDamagable
 
     public void takeDamage(float amount)
     {
-        _maxHealth -= amount;
-        _uiManager.UpdateUi("HealthUI", _maxHealth);
+        health -= amount;
+        _uiManager.UpdateUi("HealthUI", health);
 
-        if (_maxHealth <= 0)
+        if (health <= 0)
         {
+            health = 0;
             Die();
         }
     }
 
     private void Die()
     {
-        Debug.Log("dead");
+        _canShoot = false;
+        _canMove = false;
+        _canLook = false;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        _uiManager.EnableDeathUI();
     }
 }
